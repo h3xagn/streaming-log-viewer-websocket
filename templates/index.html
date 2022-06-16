@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html lang="en" class="dark">
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{{context.title}}</title>
+  </head>
+
+  <body class="dark:bg-gray-900">
+    <img
+      class="float-right py-3 px-5"
+      src="{{url_for('static', path='logo.png')}}"
+    />
+
+    <div class="flex items-center py-2 px-3">
+      <h1 class="text-3xl text-slate-300">{{context.title}}</h1>
+    </div>
+    <br />
+
+    <div class="flex items-center py-2 px-3">
+      <h2
+        class="text-2xl text-slate-400 overline decoration-4 decoration-pink-500"
+      >
+        {{context.log_file}}
+      </h2>
+    </div>
+
+    <div class="flex items-center py-2 px-3">
+      <div
+        id="logs"
+        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      >
+        reading logs...
+      </div>
+    </div>
+
+    <script>
+      var ws_log = new WebSocket("ws://localhost:8000/ws/log");
+
+      ws_log.onmessage = function (event) {
+        var logs = document.getElementById("logs");
+        var log_data = event.data;
+        logs.innerHTML = log_data;
+      };
+    </script>
+  </body>
+</html>
